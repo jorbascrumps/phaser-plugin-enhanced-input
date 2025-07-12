@@ -1,0 +1,60 @@
+import * as Phaser from 'phaser';
+
+import KeyBinding from './KeyBinding';
+import type { InputMap } from './types';
+
+export default class InputMappingContext {
+    private enabled: boolean = false;
+    private bindings: Map<string, KeyBinding> = new Map();
+    private scene: Phaser.Scene;
+
+    constructor(scene: Phaser.Scene, mapping: InputMap) {
+        this.scene = scene;
+
+        for (const [ name, { binding, pressed, held, released } ] of Object.entries(mapping)) {
+            const key = this.scene.input.keyboard!
+                .addKey(binding)
+                .setEmitOnRepeat(true);
+
+            const bindingObject: KeyBinding = new KeyBinding(this, key)
+                .pressed(pressed)
+                .held(held)
+                .released(released);
+
+            Object.defineProperty(this, name, {
+                get: (): KeyBinding => bindingObject,
+                enumerable: true,
+                configurable: true,
+            });
+
+            this.bindings.set(name, bindingObject);
+        }
+    }
+
+    public get isEnabled(): boolean {
+        return this.enabled;
+    }
+
+    public enable(): this {
+        this.enabled = true;
+
+        this.bindings.forEach((binding: KeyBinding): KeyBinding => binding.attach());
+
+        return this;
+    }
+
+    public disable(): this {
+        this.bindings.forEach((binding: KeyBinding): KeyBinding => binding.detach());
+
+        this.enabled = false;
+
+        return this;
+    }
+
+    public destroy(): void {
+        this.disable();
+
+        this.bindings.forEach((binding: KeyBinding): void => binding.destroy());
+        this.bindings.clear();
+    }
+}

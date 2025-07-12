@@ -1,0 +1,42 @@
+{
+  "name": "phaser-plugin-enhanced-input",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jorbascrumps/phaser-plugin-enhanced-input.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsup",
+    "types": "tsc --emitDeclarationOnly --declaration"
+  },
+  "keywords": [
+    "phaser",
+    "plugin",
+    "input"
+  ],
+  "author": "Chris Wright <hello@chriswright.dev>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jorbascrumps/phaser-plugin-enhanced-input/issues"
+  },
+  "homepage": "https://github.com/jorbascrumps/phaser-plugin-enhanced-input#readme",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "phaser": "^3.90.0",
+    "tsup": "^8.5.0",
+    "typescript": "^5.8.3"
+  },
+  "peerDependencies": {
+    "phaser": "^3.90.0"
+  }
+}
