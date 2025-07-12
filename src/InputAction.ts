@@ -3,7 +3,7 @@ import * as Phaser from 'phaser';
 import InputMappingContext from './InputMappingContext';
 import {InputCallback} from './types';
 
-export default class KeyBinding {
+export default class InputAction {
     context: InputMappingContext;
     key: Phaser.Input.Keyboard.Key;
     private isAttached: boolean = false;

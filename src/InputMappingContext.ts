@@ -1,11 +1,11 @@
 import * as Phaser from 'phaser';
 
-import KeyBinding from './KeyBinding';
+import InputAction from './InputAction';
 import type { InputMap } from './types';
 
 export default class InputMappingContext {
     private enabled: boolean = false;
-    private bindings: Map<string, KeyBinding> = new Map();
+    private bindings: Map<string, InputAction> = new Map();
     private scene: Phaser.Scene;
 
     constructor(scene: Phaser.Scene, mapping: InputMap) {
@@ -16,13 +16,13 @@ export default class InputMappingContext {
                 .addKey(binding)
                 .setEmitOnRepeat(true);
 
-            const bindingObject: KeyBinding = new KeyBinding(this, key)
+            const bindingObject: InputAction = new InputAction(this, key)
                 .pressed(pressed)
                 .held(held)
                 .released(released);
 
             Object.defineProperty(this, name, {
-                get: (): KeyBinding => bindingObject,
+                get: (): InputAction => bindingObject,
                 enumerable: true,
                 configurable: true,
             });
@@ -38,13 +38,13 @@ export default class InputMappingContext {
     public enable(): this {
         this.enabled = true;
 
-        this.bindings.forEach((binding: KeyBinding): KeyBinding => binding.attach());
+        this.bindings.forEach((binding: InputAction): InputAction => binding.attach());
 
         return this;
     }
 
     public disable(): this {
-        this.bindings.forEach((binding: KeyBinding): KeyBinding => binding.detach());
+        this.bindings.forEach((binding: InputAction): InputAction => binding.detach());
 
         this.enabled = false;
 
@@ -54,7 +54,7 @@ export default class InputMappingContext {
     public destroy(): void {
         this.disable();
 
-        this.bindings.forEach((binding: KeyBinding): void => binding.destroy());
+        this.bindings.forEach((binding: InputAction): void => binding.destroy());
         this.bindings.clear();
     }
 }
